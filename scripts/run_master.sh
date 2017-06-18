@@ -1,12 +1,11 @@
-#!/bin/bash
-# TODO: my problem was that SSH service wasn't started
+#!/bin/bash 
 echo "Initializing SSH"
 sudo service ssh start
 eval `ssh-agent -s`
 exec ssh-add &
 
 # Below 3 lines will hide the prompt about fingerprinting during ssh connection 
-# for HDFS
+# to HDFS
 ssh -oStrictHostKeyChecking=no spark-master uptime
 ssh -oStrictHostKeyChecking=no localhost uptime
 ssh -oStrictHostKeyChecking=no 0.0.0.0 uptime
