@@ -1,0 +1,7 @@
+<configuration>
+    <property>
+        <name>fs.default.name</name>
+        <!-- if defined as localhost, spark-slave can't connect to it-->
+        <value>hdfs://172.18.0.20:9000</value>
+    </property> 
+</configuration>
