@@ -14,6 +14,8 @@ RUN apt-get update && \
 # Install needed packages
 RUN apt-get install less -y
 RUN apt-get -y install vim
+RUN apt-get update && \
+      apt-get -y install sudo 
 
 RUN useradd -ms /bin/bash sparker
 USER sparker
