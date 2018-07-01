@@ -1,25 +1,22 @@
 # spark-docker-yarn
-This repository contains Docker images for Spark executed on Hadoop YARN. The purpose of them is to allow programmers to test Spark applications deployed on YARN easier. **It was not designed to be deployed in production environments**. The project was tested on Ubuntu 16. 
+This repository contains Docker images for Apache Spark executed on Hadoop YARN. 
+The purpose of them is to allow programmers to test Spark applications deployed on YARN easier. 
+**It was not designed to be deployed in production environments**. The project was tested on Ubuntu 16. 
 
 # Building the cluster
-The cluster is built with `build_cluster.sh` script. The script accepts 2 parameters: 
-```
-./build_cluster.sh [number of workers] [recreate]
-```
-Where:
-* `[number of workers]` - number of workers to deploy
-* `[recreate]` - if set to `recreate`, previously built images will be destroyed and rebuild
+Unlike https://github.com/bartosz25/spark-docker/releases/tag/v1.0 version, this one uses `docker-compose` to create master and worker containers (nodes). It's executed with standard `docker-compose up` command and the number of workers is  defined with `--scale slave=X` property. 
 
-For example, to build a cluster with 3 slaves, the following command must be used:
+But before calling it, 3 Docker images must be built with the help of `make`:
 ```
-./build_cluster.sh 3
+make build_base_image
+make build_master_image
+make build_master_image
 ```
 
-To build a cluster with 3 slaves and rebuild Docker images, this command must be executed:
+Now we can build a cluster with for intance 3 slaves, the following command must be used:
 ```
-./build_cluster.sh 3 recreate
-```
-
+docker-compose up   --scale slave=3
+```  
 
 # Spark and YARN UIs
 Spark and YARN expose web UI used to track the execution of the applications:
@@ -29,8 +26,8 @@ Spark and YARN expose web UI used to track the execution of the applications:
 # Repository structure
 * conf-master: stores master's configuration files are stored there
 * conf-slave: stores slave's configuration files are stored there 
-* master: contains master's Dockerfile and building script
-* slave: contains slave's Dockerfile and building script
+* master: contains master's Dockerfile
+* slave: contains slave's Dockerfile
 * shared-master: this repository is shared between master's Docker container (/home/sparker/shared) and host. 
 * shared-slave: this repository is shared between slave Docker containers (/home/sparker/shared) and host
 

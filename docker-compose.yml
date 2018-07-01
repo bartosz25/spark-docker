@@ -1,0 +1,36 @@
+version: '3'
+services:
+  master:
+    ports: 
+      - "127.0.0.1:7077:7077"
+      - "127.0.0.1:8088:8088"
+      - "127.0.0.1:4040:4040"
+      - "127.0.0.1:18080:18080"
+    networks:
+      spark-network:
+        ipv4_address: 172.18.0.20
+    hostname: spark-master
+    volumes:
+       - ./shared-master:/home/sparker/shared
+    image: "spark_compose_master:latest"
+  slave:
+    ports:
+      - "7177"
+    environment:
+       - "script=run_slave.sh"
+    networks:
+      - spark-network
+    volumes:
+       - ./shared-slave:/home/sparker/shared
+    extra_hosts:
+      - "spark-master:172.18.0.20"
+    depends_on:
+    -  master
+    image: "spark_compose_slave:latest"
+networks:
+  spark-network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+      - subnet: 172.18.0.0/16
