@@ -10,7 +10,7 @@ But before calling it, 3 Docker images must be built with the help of `make`:
 ```
 make build_base_image
 make build_master_image
-make build_master_image
+make build_slave_image
 ```
 
 Now we can build a cluster with for intance 3 slaves, the following command must be used:
@@ -38,3 +38,8 @@ To verify that the cluster was correctly installed, launch _SparkPi_ example:
 ```
 spark-submit --class org.apache.spark.examples.SparkPi --master yarn --deploy-mode cluster --driver-memory 1g --executor-memory 1g --executor-cores 1 ~/spark-2.1.0-bin-hadoop2.7/examples/jars/spark-examples*.jar 1000
 ```
+
+# Troubleshooting
+## "Unhealthy Node local-dirs and log-dirs"
+I encounter the issue when I had too few available disk space. It makes that the slave nodes are detected as unhealthy. You can fix that either by playing with the configuration 
+https://stackoverflow.com/questions/29131449/why-does-hadoop-report-unhealthy-node-local-dirs-and-log-dirs-are-bad or simply by ensuring that you have enough free disk space.
