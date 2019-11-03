@@ -5,10 +5,9 @@ FROM ubuntu:16.04
 RUN apt-get update && \
     apt-get upgrade -y && \
     apt-get install -y  software-properties-common && \
-    add-apt-repository ppa:webupd8team/java -y && \
+    add-apt-repository ppa:openjdk-r/ppa -y && \
     apt-get update && \
-    echo oracle-java8-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections && \
-    apt-get install -y oracle-java8-installer && \
+    apt-get install -y openjdk-8-jdk && \
     apt-get clean 
      
 # Install needed packages
@@ -25,7 +24,7 @@ RUN useradd -ms /bin/bash sparker
 USER sparker
 WORKDIR /home/sparker
 
-ENV JAVA_HOME /usr/lib/jvm/java-8-oracle/
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64/jre/
 # Download Spark binary distribution with Hadoop 
 ENV HADOOP_VERSION 2.7.3
 ENV HADOOP_HOME /home/sparker/hadoop-$HADOOP_VERSION
@@ -33,7 +32,7 @@ ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 ENV PATH $PATH:$HADOOP_HOME/bin
 RUN wget http://archive.apache.org/dist/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz  -q -O ./hadoop-$HADOOP_VERSION.tar.gz
 RUN tar -xvzf ./hadoop-$HADOOP_VERSION.tar.gz
-RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-oracle/" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
+RUN echo "export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64/jre/" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh
 
 # SPARK
 ENV SPARK_VERSION 2.1.0 
